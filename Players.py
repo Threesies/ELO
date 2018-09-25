@@ -7,29 +7,34 @@ Created on Sun Sep 23 21:11:21 2018
 """
 
 import xlrd
+workbook = xlrd.open_workbook('brackets.xlsx')
+#message box to ask for number of players
+#select players playing
+
+def available_players():
+    
+
+def open_brackets():
+    if #messagebox.input == 4
+        sheet = workbook.sheet_by_name('4')
+    elif #messagebox.input == 5
+        sheet = workbook.sheet_by_name('5')
+    elif #messagebox.input == 6
+        sheet = workbook.sheet_by_name('6')
+    elif #messagebox.input == 7
+        sheet = workbook.sheet_by_name('7')
+    elif #messagebox.input == 8
+        sheet = workbook.sheet_by_name('8')
+    elif #messagebox.input == 9
+        sheet = workbook.sheet_by_name('9')
+    elif #messagebox.input == 10
+        sheet = workbook.sheet_by_name('10')
+
+
 workbook = xlrd.open_workbook('ELO.xlsx')
 sheet = workbook.sheet_by_name('Player Ratings')
 
-
-class player(object):
-    def __init__(self, name, rating):
-        self.name = name
-        self.rating = rating
-
-    def getName(self):
-        return self.name
-
-    def getRating(self):
-        return self.rating
-
-    def __str__(self):
-        return "%s has a rating of %s" % (self.name, self.rating)
-    
-
-win = 1.0
-loss= 0.0
-k = 32
-
+For  
 A_rating = sheet.cell(1, 1).value
 B_rating = sheet.cell(1, 2).value
 C_rating = sheet.cell(1, 3).value
@@ -40,27 +45,34 @@ G_rating = sheet.cell(1, 7).value
 H_rating = sheet.cell(1, 8).value
 I_rating = sheet.cell(1, 9).value
 J_rating = sheet.cell(1, 10).value
+K_rating = sheet.cell(1, 11).value
+
+ratings = [A_rating, B_rating, C_rating, D_rating, E_rating, F_rating, G_rating, H_rating, I_rating, J_rating, K_rating]
+sorted(ratings, reverse=False)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def expected_outcome(player1, player2):
 
     return 1 / (1 + 10 ** ((B_rating - A_rating) / 400))
+# add in factor of side of table players are on
 
+win = 1.0
+loss= 0.0
+k = 32
 
-
-import tkinter as tk
-from tkinter import ttk
-NORM_FONT= ("Verdana", 10)
-
-def score_popup(msg):
-    popup = tk.Tk()
-    popup.wm_title("!")
-    label = ttk.Label(popup, text=msg, font=NORM_FONT)
-    label.pack(side="top", fill="x", pady=10)
-    B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
-    B1.pack()
-    popup.mainloop()
-
+#message box to ask who won
 def new_rating(old, exp, score, k=32):
     """
     Calculate the new Elo rating for a player
@@ -86,3 +98,18 @@ def update_rating(winner, loser):
 
 #writing new rating
 # sheet.write(0, 0,'Inserting data in 1st Row and 1st Column')
+
+
+class player(object):
+    def __init__(self, name, rating):
+        self.name = name
+        self.rating = rating
+
+    def getName(self):
+        return self.name
+
+    def getRating(self):
+        return self.rating
+
+    def __str__(self):
+        return "%s has a rating of %s" % (self.name, self.rating)

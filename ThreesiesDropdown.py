@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Sep 25 20:37:10 2018
-@author: cburns
+@author: acelentano
 """
 #from https://stackoverflow.com/questions/35330224/python-tkinter-xlsxwriter-trying-to-export-user-input-to-excel-file?rq=1
 import tkinter
@@ -24,17 +24,20 @@ e2 = tkinter.StringVar(root)
 e3 = tkinter.StringVar(root)
 
 winning = ['Select Winner']
+e3.set(winning[0])
 
 def winner(root):
     global option1
     global option2
+    global options
     option1 = str(e1.get())
     option2 = str(e2.get())
-    e3.set(winning[0])
+    return option1, option2
 
-winning.insert(1, option1)
-winning.insert(2, option2)
 winner(root)
+winning.extend(options)
+#winning.insert(1, option1)
+#winning.insert(2, option2)
 entry3 = OptionMenu(root, e3, *winning)
 entry3.grid(row=3, column=1, sticky='nsew')
 entry3.config(width=15)
@@ -65,7 +68,8 @@ def SubmitEntry():
         champs.to_csv('ThreesiesLog.csv', index=False)  
         e1.set(choices[0])
         e2.set(choices[0])
-        e3.set(choices[0])
+        global winning
+        winning = ['Select Winner']
 
 def keypress(event):
     if event.keysym == 'Escape':

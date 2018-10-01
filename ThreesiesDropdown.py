@@ -12,6 +12,8 @@ from time import gmtime, strftime
 from tkinter import OptionMenu
 import pandas as pd
 
+
+
 os.chdir('/users/acelentano/pong/')
 champs = pd.read_csv('ThreesiesLog.csv')
 root = tkinter.Tk()
@@ -52,16 +54,20 @@ entry3.config(width=15)
 def SubmitEntry():
     submit = tkinter.messagebox.askquestion("Submit Entry", "Submit Game?")
     if submit == "yes":
+        global player1
         player1 = e1.get()
+        global player2
         player2 = e2.get()
+        global gamewinner
         gamewinner = e3.get()
+        global loser
         if player1 == gamewinner:
             loser = player2
         else:
             loser = player1
         currentrow = pd.DataFrame([[player1,player2,gamewinner,loser,strftime("%m-%d-%Y %H:%M", gmtime())]],columns=['Left Side Player','Right Side Player','Winner', 'Loser','Time'])
         global champs
-        champs = pd.concat([champs,currentrow],axis=0, ignore_index=True)
+        champs = pd.concat([champs,currentrow],axis=0, ignore_index=True, sort=True)
         champs.to_csv('ThreesiesLog.csv', index=False)  
         e1.set(choices[0])
         e2.set(choices[0])

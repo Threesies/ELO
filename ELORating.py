@@ -7,33 +7,23 @@ Created on Thu Sep 27 11:49:30 2018
 
 
 import pandas as pd
-import ThreesiesDropdown
-from ThreesiesDropdown import gamewinner, loser, e1, e2
-ratings = pd.read_csv('Ratings.csv')
 
-a = e1.get()
-b = e2.get()
+champs = pd.read_csv('ThreesiesLog.csv')
+current_rating = pd.read_csv('Threesies_Elo_Ratings')
+current_rating.columns = ['Name', 'Rating']
+current_rating.set_index('Name', inplace = True)
+dictionary = current_rating.to_dict()
 
-def FindCurrentRating(player):
-    for row in ratings:
-        match=(row['Name'])
-        if player == match:
-            player_rating = row['Rating']
-        return player_rating
-
-elo_a = FindCurrentRating(a)
-elo_b = FindCurrentRating(b)
-
-if a == gamewinner:
-    winner_elo = elo_a
-else: 
-    winner_elo = elo_b
+# =============================================================================
+# Functions
+# =============================================================================
+def loser(row):
+    if row['Right Side Player'] == row['Winner']:
+        return row['Left Side Player']
+    else:
+        return row['Right Side Player']
     
-if a == loser:
-    loser_elo = elo_a
-else:
-    loser_elo = elo_b
-    
+
 def expected_result(elo_a, elo_b):
     elo_width = 400
     expect_a = 1.0/(1+10**((elo_b - elo_a)/elo_width))
@@ -47,16 +37,39 @@ def update_elo(winner_elo, loser_elo):
     loser_elo -= change_in_elo
     return round(winner_elo, 2), round(loser_elo, 2)
 
-updated_rating = update_elo(winner_elo, loser_elo)
-print(a)
-print(b)
 
-print(winner_elo)
-print(loser_elo)
+# =============================================================================
+# Preprocessing
+# =============================================================================
+#Add Loser
+champs['Loser'] = champs.apply(loser,axis=1)
+#Create list of Winners and Losers
+Winner = list(champs['Winner'])
+Loser = list(champs['Loser'])
 
-#def UpdateCSV(): 
-#    for i in players:
-#        i = name
-#        currentrow = pd.DataFrame([[name, ratings]],columns=['Name','Rating'])
-#        Ratings = pd.concat([ratings,currentrow],axis=0, ignore_index=True)
-#        Ratings.to_csv('Ratings.csv', index=False) 
+#Blank List to fill DataFrame later (line 68 and 69)
+update_win =[]
+update_loss = []
+
+# =============================================================================
+# Create new ELO Rating
+# =============================================================================
+i = 0
+for i in range(len(Winner)):
+    Win = Winner[i]
+    Lose = Loser[i]
+    updated_score = update_elo(dictionary['Rating'][Win], dictionary['Rating'][Lose])
+    dictionary['Rating'][Win], dictionary['Rating'][Lose] = updated_score
+    update_win.append(round(updated_score[0],2))
+    update_loss.append(round(updated_score[1],2))
+
+# =============================================================================
+# Add to DataFrame
+# =============================================================================
+champs['Winner ELO Update'] = update_win
+champs['Loser ELO Update'] = update_loss
+
+# =============================================================================
+# Delete crap
+# =============================================================================
+del update_win, update_loss, Winner, Loser, i, Lose, Win, current_rating, updated_score

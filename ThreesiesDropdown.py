@@ -55,7 +55,11 @@ def SubmitEntry():
         player1 = e1.get()
         player2 = e2.get()
         gamewinner = e3.get()
-        currentrow = pd.DataFrame([[player1,player2,gamewinner,strftime("%m-%d-%Y %H:%M", gmtime())]],columns=['Left Side Player','Right Side Player','Winner','Time'])
+        if player1 == gamewinner:
+            loser = player2
+        else:
+            loser = player1
+        currentrow = pd.DataFrame([[player1,player2,gamewinner,loser,strftime("%m-%d-%Y %H:%M", gmtime())]],columns=['Left Side Player','Right Side Player','Winner', 'Loser','Time'])
         global champs
         champs = pd.concat([champs,currentrow],axis=0, ignore_index=True)
         champs.to_csv('ThreesiesLog.csv', index=False)  

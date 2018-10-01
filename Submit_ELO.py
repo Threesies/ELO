@@ -5,7 +5,6 @@ Created on Thu Sep 27 11:49:30 2018
 @author: 582957
 """
 
-
 import pandas as pd
 import ThreesiesDropdown
 from ThreesiesDropdown import gamewinner, loser, e1, e2

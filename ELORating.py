@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Sep 27 11:49:30 2018
-
 @author: 582957
 """
 
@@ -35,7 +34,9 @@ def update_elo(winner_elo, loser_elo):
     change_in_elo = k_factor * (1-expected_win)
     winner_elo += change_in_elo
     loser_elo -= change_in_elo
-    return round(winner_elo, 2), round(loser_elo, 2)
+    return round(winner_elo, 2), round(loser_elo, 2)\
+
+#def add_championship():
 
 
 # =============================================================================

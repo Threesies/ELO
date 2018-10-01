@@ -24,16 +24,10 @@ export = "ThreesiesLog"
 e1 = tkinter.StringVar(root)
 e2 = tkinter.StringVar(root)
 e3 = tkinter.StringVar(root)
+e4 = tkinter.StringVar(root)
 
-#winning = ['Select Winner']
-#e3.set(winning[0])
-#def update(root):
-#    option1 = e1.get()
-#    option2 = e2.get()
-#    winning.insert(1, option1)
-#    winning.insert(2, option2)
-
-choices = ['Select Player', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', 'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris']
+choices = ['Select Player', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', 'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon']
+champs = ['Select Champion', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', 'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon']
 
 e1.set(choices[0])
 entry1 = OptionMenu(root, e1, *choices)
@@ -49,6 +43,12 @@ e3.set(choices[0])
 entry3 = tkinter.OptionMenu(root, e3, *choices)
 entry3.grid(row=3, column=1, sticky='nsew')
 entry3.config(width=15)
+
+e4.set(champs[0])
+entry4 = tkinter.OptionMenu(root, e4, *champs)
+entry4.grid(row=4, column=1, sticky='nsew')
+entry4.config(width=15)
+
 
 #Submit Button
 def SubmitEntry():
@@ -69,10 +69,16 @@ def SubmitEntry():
         global champs
         champs = pd.concat([champs,currentrow],axis=0, ignore_index=True, sort=True)
         champs.to_csv('ThreesiesLog.csv', index=False)  
+        
+        champion = e4.get()
+        print(champion)
+        #add_championship(champion)
+        
         e1.set(choices[0])
         e2.set(choices[0])
         e3.set(choices[0])
-
+        e4.set(choices[0])
+        
 def keypress(event):
     if event.keysym == 'Escape':
         root.destroy()
@@ -85,6 +91,7 @@ def QuitEntry():
 firstname = tkinter.Label(text="Left Side Player", fg="green")
 secondname = tkinter.Label(text="Right Side Player", fg="green")
 winner = tkinter.Label(text="WINNER", fg="blue")
+Champion = tkinter.Label(text="Champion!", fg="blue")
 
 Submit = tkinter.Button(root, fg="blue", bg="green", text="Submit Game", width=20, command=SubmitEntry, activebackground="yellow")
 Quit = tkinter.Button(root, fg="blue", bg="green", text="End Tournament", width=20, command=QuitEntry,activebackground="yellow")
@@ -94,7 +101,7 @@ firstname.grid(row=0, column=0,sticky='e')
 secondname.grid(row=0, column=2, sticky='e')
 winner.grid(row=2, column=1, sticky='nsew')
 Submit.grid(row=5, column=1, sticky='nsew')
-Quit.grid(row=6, column=1, sticky='nsew') 
+Quit.grid(row=7, column=1, sticky='nsew') 
 root.resizable(False, False)
 root.columnconfigure(0, weight=1)
 root.columnconfigure(1, weight=1)

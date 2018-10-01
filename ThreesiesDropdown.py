@@ -23,37 +23,30 @@ e1 = tkinter.StringVar(root)
 e2 = tkinter.StringVar(root)
 e3 = tkinter.StringVar(root)
 
-winning = ['Select Winner']
-e3.set(winning[0])
-
-def winner(root):
-    global option1
-    global option2
-    global options
-    option1 = str(e1.get())
-    option2 = str(e2.get())
-    return option1, option2
-
-winner(root)
-winning.extend(options)
-#winning.insert(1, option1)
-#winning.insert(2, option2)
-entry3 = OptionMenu(root, e3, *winning)
-entry3.grid(row=3, column=1, sticky='nsew')
-entry3.config(width=15)
-
+#winning = ['Select Winner']
+#e3.set(winning[0])
+#def update(root):
+#    option1 = e1.get()
+#    option2 = e2.get()
+#    winning.insert(1, option1)
+#    winning.insert(2, option2)
 
 choices = ['Select Player', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', 'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris']
 
 e1.set(choices[0])
-entry1 = OptionMenu(root, e1, *choices, command=winner)
+entry1 = OptionMenu(root, e1, *choices)
 entry1.grid(row=1, column=0, sticky='e')
 entry1.config(width=10)
 
 e2.set(choices[0])
-entry2 = OptionMenu(root, e2, *choices, command=winner)
+entry2 = OptionMenu(root, e2, *choices)
 entry2.grid(row=1, column=2, sticky='e')   
 entry2.config(width=10)
+
+e3.set(choices[0])
+entry3 = tkinter.OptionMenu(root, e3, *choices)
+entry3.grid(row=3, column=1, sticky='nsew')
+entry3.config(width=15)
 
 #Submit Button
 def SubmitEntry():
@@ -68,8 +61,7 @@ def SubmitEntry():
         champs.to_csv('ThreesiesLog.csv', index=False)  
         e1.set(choices[0])
         e2.set(choices[0])
-        global winning
-        winning = ['Select Winner']
+        e3.set(choices[0])
 
 def keypress(event):
     if event.keysym == 'Escape':

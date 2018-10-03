@@ -6,12 +6,15 @@ Created on Thu Sep 27 11:49:30 2018
 
 
 import pandas as pd
+from ThreesiesDropdown import champion
 
 champs = pd.read_csv('ThreesiesLog.csv')
 current_rating = pd.read_csv('Threesies_Elo_Ratings')
 current_rating.columns = ['Name', 'Rating']
 current_rating.set_index('Name', inplace = True)
 dictionary = current_rating.to_dict()
+
+championships = pd.read_csv('Championships.csv')
 
 # =============================================================================
 # Functions
@@ -21,7 +24,6 @@ def loser(row):
         return row['Left Side Player']
     else:
         return row['Right Side Player']
-    
 
 def expected_result(elo_a, elo_b):
     elo_width = 400
@@ -36,8 +38,13 @@ def update_elo(winner_elo, loser_elo):
     loser_elo -= change_in_elo
     return round(winner_elo, 2), round(loser_elo, 2)\
 
-#def add_championship():
-
+def add_championship(y):
+    choices = list(championships['Names'])
+    number = list(championships['Number of Championships'])
+    global d
+    d = dict(zip(choices, number))
+    d[y] += 1  
+    return d
 
 # =============================================================================
 # Preprocessing
@@ -55,14 +62,14 @@ update_loss = []
 # =============================================================================
 # Create new ELO Rating
 # =============================================================================
-i = 0
 for i in range(len(Winner)):
+    i = 0
     Win = Winner[i]
     Lose = Loser[i]
     updated_score = update_elo(dictionary['Rating'][Win], dictionary['Rating'][Lose])
     dictionary['Rating'][Win], dictionary['Rating'][Lose] = updated_score
-    update_win.append(round(updated_score[0],2))
-    update_loss.append(round(updated_score[1],2))
+    update_win.append(updated_score[0])
+    update_loss.append(updated_score[1])
 
 # =============================================================================
 # Add to DataFrame
@@ -71,6 +78,21 @@ champs['Winner ELO Update'] = update_win
 champs['Loser ELO Update'] = update_loss
 
 # =============================================================================
+# Add to championship total
+# =============================================================================
+#Add championship count dictionary
+
+add_championship(champion)
+
+with open('Championships.csv', 'w') as csvfile:
+    writer = championships.writer(championships, fieldnames=['Names','Number of Championships'])
+    writer.writeheader()
+    for data in d:
+        writer.writerow(data)
+
+# =============================================================================
 # Delete crap
 # =============================================================================
 del update_win, update_loss, Winner, Loser, i, Lose, Win, current_rating, updated_score
+
+

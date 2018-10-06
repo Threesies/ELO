@@ -11,6 +11,7 @@ import tkinter.messagebox
 from time import gmtime, strftime
 from tkinter import OptionMenu
 import pandas as pd
+from ELORating import add_championship
 
 os.chdir('/users/acelentano/pong/')
 champs = pd.read_csv('ThreesiesLog.csv')
@@ -25,8 +26,10 @@ e3 = tkinter.StringVar(root)
 e4 = tkinter.StringVar(root)
 
 global choices
-choices = ['Select Player', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', 'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon']
-champions = ['Select Champion', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', 'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon']
+choices = ['Select Player', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', \
+           'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon']
+champions = ['Select Champion', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', \
+             'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon']
 
 e1.set(choices[0])
 entry1 = OptionMenu(root, e1, *choices)
@@ -56,13 +59,17 @@ def SubmitEntry():
         player2 = e2.get()
         gamewinner = e3.get()
         if e4.get() != 'Select Champion':
-            championship = '***'
-        currentrow = pd.DataFrame([[player1,player2,gamewinner,strftime("%m-%d-%Y %H:%M", gmtime()), championship]],columns=['Left Side Player','Right Side Player','Winner','Time', 'Championship'])
+            add_championship(e4.get())
+            currentrow = pd.DataFrame([[player1,player2,gamewinner,strftime("%m-%d-%Y %H:%M", \
+                        gmtime())]],columns=['Left Side Player','Right Side Player',\
+                        'Winner','Time'])
+        elif e4.get() == 'Select Champion':
+            currentrow = pd.DataFrame([[player1,player2,gamewinner,strftime("%m-%d-%Y %H:%M", \
+                    gmtime())]],columns=['Left Side Player','Right Side Player',\
+                    'Winner','Time'])
         global champs
         champs = pd.concat([champs,currentrow],axis=0, ignore_index=True, sort=True)
         champs.to_csv('ThreesiesLog.csv', index=False)   
-        global champion
-        champion = e4.get()
         e1.set(choices[0])
         e2.set(choices[0])
         e3.set(choices[0])

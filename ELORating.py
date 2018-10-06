@@ -6,7 +6,7 @@ Created on Thu Sep 27 11:49:30 2018
 
 
 import pandas as pd
-from ThreesiesDropdown import champion
+import ThreesiesDropdown
 
 champs = pd.read_csv('ThreesiesLog.csv')
 current_rating = pd.read_csv('Threesies_Elo_Ratings')
@@ -15,10 +15,12 @@ current_rating.set_index('Name', inplace = True)
 dictionary = current_rating.to_dict()
 
 championships = pd.read_csv('Championships.csv')
+championships.set_index('Names', inplace= True)
 
 # =============================================================================
 # Functions
 # =============================================================================
+
 def loser(row):
     if row['Right Side Player'] == row['Winner']:
         return row['Left Side Player']
@@ -39,12 +41,10 @@ def update_elo(winner_elo, loser_elo):
     return round(winner_elo, 2), round(loser_elo, 2)\
 
 def add_championship(y):
-    choices = list(championships['Names'])
-    number = list(championships['Number of Championships'])
-    global d
-    d = dict(zip(choices, number))
-    d[y] += 1  
-    return d
+    num = championships.loc[y]
+    newnum = num + 1
+    championships.at[y] = newnum
+    return championships
 
 # =============================================================================
 # Preprocessing
@@ -78,21 +78,12 @@ champs['Winner ELO Update'] = update_win
 champs['Loser ELO Update'] = update_loss
 
 # =============================================================================
-# Add to championship total
-# =============================================================================
-#Add championship count dictionary
-
-add_championship(champion)
-
-with open('Championships.csv', 'w') as csvfile:
-    writer = championships.writer(championships, fieldnames=['Names','Number of Championships'])
-    writer.writeheader()
-    for data in d:
-        writer.writerow(data)
-
-# =============================================================================
 # Delete crap
 # =============================================================================
 del update_win, update_loss, Winner, Loser, i, Lose, Win, current_rating, updated_score
 
-
+# =============================================================================
+# Add to championship total
+# =============================================================================
+championships.to_csv('Championships.csv')
+championships.sort_values('Number', ascending = False)

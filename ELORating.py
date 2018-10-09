@@ -16,7 +16,6 @@ dictionary = current_rating.to_dict()
 
 championships = pd.read_csv('Championships.csv')
 championships.set_index('Names', inplace= True)
-
 # =============================================================================
 # Functions
 # =============================================================================
@@ -40,12 +39,6 @@ def update_elo(winner_elo, loser_elo):
     loser_elo -= change_in_elo
     return round(winner_elo, 2), round(loser_elo, 2)\
 
-def add_championship(y):
-    num = championships.loc[y]
-    newnum = num + 1
-    championships.at[y] = newnum
-    return championships
-
 # =============================================================================
 # Preprocessing
 # =============================================================================
@@ -63,7 +56,6 @@ update_loss = []
 # Create new ELO Rating
 # =============================================================================
 for i in range(len(Winner)):
-    i = 0
     Win = Winner[i]
     Lose = Loser[i]
     updated_score = update_elo(dictionary['Rating'][Win], dictionary['Rating'][Lose])
@@ -80,10 +72,5 @@ champs['Loser ELO Update'] = update_loss
 # =============================================================================
 # Delete crap
 # =============================================================================
-del update_win, update_loss, Winner, Loser, i, Lose, Win, current_rating, updated_score
+del i, update_loss, update_win, updated_score, Winner, Lose, Loser, current_rating, Win
 
-# =============================================================================
-# Add to championship total
-# =============================================================================
-championships.to_csv('Championships.csv')
-championships.sort_values('Number', ascending = False)

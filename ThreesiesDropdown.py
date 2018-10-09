@@ -11,9 +11,16 @@ import tkinter.messagebox
 from time import gmtime, strftime
 from tkinter import OptionMenu
 import pandas as pd
-from ELORating import add_championship
+championships = pd.read_csv('Championships.csv')
+championships.set_index('Names', inplace= True)
 
-os.chdir('/users/acelentano/pong/')
+def add_championship(y):
+    num = championships.loc[y]
+    newnum = num + 1
+    championships.at[y] = newnum
+    return championships
+
+os.chdir('C:/Users/593170/Desktop/pong/ELO')
 champs = pd.read_csv('ThreesiesLog.csv')
 root = tkinter.Tk()
 title = "RTB"
@@ -58,30 +65,32 @@ def SubmitEntry():
         player1 = e1.get()
         player2 = e2.get()
         gamewinner = e3.get()
-        if e4.get() != 'Select Champion':
-            add_championship(e4.get())
-            currentrow = pd.DataFrame([[player1,player2,gamewinner,strftime("%m-%d-%Y %H:%M", \
-                        gmtime())]],columns=['Left Side Player','Right Side Player',\
-                        'Winner','Time'])
-        elif e4.get() == 'Select Champion':
+        if e4.get() == 'Select Champion':
+            global champs
             currentrow = pd.DataFrame([[player1,player2,gamewinner,strftime("%m-%d-%Y %H:%M", \
                     gmtime())]],columns=['Left Side Player','Right Side Player',\
                     'Winner','Time'])
-        global champs
-        champs = pd.concat([champs,currentrow],axis=0, ignore_index=True, sort=True)
-        champs.to_csv('ThreesiesLog.csv', index=False)   
-        e1.set(choices[0])
-        e2.set(choices[0])
-        e3.set(choices[0])
-        e4.set(choices[0])
-        
+            champs = pd.concat([champs,currentrow],axis=0, ignore_index=True, sort=True)
+            champs.to_csv('ThreesiesLog.csv', index=False)   
+            e1.set(choices[0])
+            e2.set(choices[0])
+            e3.set(choices[0])
+        else: 
+            add_championship(e4.get())
+            championships.to_csv('Championships.csv')
+            currentrow = pd.DataFrame([[player1,player2,gamewinner,strftime("%m-%d-%Y %H:%M", \
+                        gmtime())]],columns=['Left Side Player','Right Side Player',\
+                        'Winner','Time'])
+            champs = pd.concat([champs,currentrow],axis=0, ignore_index=True, sort=True)
+            champs.to_csv('ThreesiesLog.csv', index=False) 
+
 def keypress(event):
     if event.keysym == 'Escape':
         root.destroy()
 
 def QuitEntry():
-    quitask = tkinter.messagebox.showinfo("Save","Your entries have been saved to " + export)
-    if quitask == "yes":
+    quittask = tkinter.messagebox.showinfo("End Tournament", "Submit Championship?")
+    if quittask == "ok":
         root.destroy() 
 
 firstname = tkinter.Label(text="Left Side Player", fg="green")
@@ -90,7 +99,7 @@ winner = tkinter.Label(text="WINNER", fg="blue")
 Champion = tkinter.Label(text="Champion!", fg="blue")
 
 Submit = tkinter.Button(root, fg="blue", bg="green", text="Submit Game", width=20, command=SubmitEntry, activebackground="yellow")
-Quit = tkinter.Button(root, fg="blue", bg="green", text="End Tournament", width=20, command=QuitEntry,activebackground="yellow")
+Quit = tkinter.Button(root, fg="blue", bg="green", text="End Tournament", width=20, command=QuitEntry, activebackground="yellow")
 
 root.bind_all('<Key>', keypress)
 firstname.grid(row=0, column=0,sticky='e')

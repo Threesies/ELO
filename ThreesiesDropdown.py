@@ -20,7 +20,7 @@ def add_championship(y):
     championships.at[y] = newnum
     return championships
 
-os.chdir('C:/Users/593170/Desktop/pong/ELO')
+os.chdir('/Users/acelentano/pong/ELO')
 champs = pd.read_csv('ThreesiesLog.csv')
 root = tkinter.Tk()
 title = "RTB"
@@ -34,9 +34,9 @@ e4 = tkinter.StringVar(root)
 
 global choices
 choices = ['Select Player', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', \
-           'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon']
+           'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon', 'Peter']
 champions = ['Select Champion', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', \
-             'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon']
+             'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon', 'Peter']
 
 e1.set(choices[0])
 entry1 = OptionMenu(root, e1, *choices)

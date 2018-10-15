@@ -58,6 +58,7 @@ entry4 = tkinter.OptionMenu(root, e4, *champions)
 entry4.grid(row=4, column=1, sticky='nsew')
 entry4.config(width=15)
 
+
 #Submit Button
 def SubmitEntry():
     submit = tkinter.messagebox.askquestion("Submit Entry", "Submit Game?")
@@ -67,7 +68,7 @@ def SubmitEntry():
         gamewinner = e3.get()
         if e4.get() == 'Select Champion':
             global champs
-            currentrow = pd.DataFrame([[player1,player2,gamewinner,strftime("%m-%d-%Y %H:%M", \
+            currentrow = pd.DataFrame([[player1,player2,gamewinner, strftime("%m-%d-%Y %H:%M", \
                     gmtime())]],columns=['Left Side Player','Right Side Player',\
                     'Winner','Time'])
             champs = pd.concat([champs,currentrow],axis=0, ignore_index=True, sort=True)

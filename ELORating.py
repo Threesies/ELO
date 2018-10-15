@@ -72,5 +72,24 @@ champs['Loser ELO Update'] = update_loss
 # =============================================================================
 # Delete crap
 # =============================================================================
-del i, update_loss, update_win, updated_score, Winner, Lose, Loser, current_rating, Win
+del i, update_loss, update_win, updated_score, Winner, Lose, current_rating, Win
 
+# =============================================================================
+# analysis
+# =============================================================================
+import numpy as np
+np.where(champs['Winner'] == champs['Left Side Player'],1,0).mean()
+
+winner_matrix = pd.crosstab(champs['Winner'],champs['Loser'])
+
+def player_matchup(player1, player2):
+    player2wins = winner_matrix[player1][player2]
+    player1wins = winner_matrix[player2][player1]
+    total = player1wins + player2wins
+    player1_perc = (player1wins/total)*100
+    player2_perc = player2wins/total
+    print('Percentage wins for ' + str(player1) + ': ' + str(player1_perc)+'%')
+    print('Percentage wins for ' + str(player2) + ': ' + str(player2_perc)+'%')
+
+
+        

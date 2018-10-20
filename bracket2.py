@@ -44,8 +44,8 @@ if __name__ == '__main__':
            'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon', 'Peter']
     cbs = dict()
     for i, value in enumerate(cb_list):
-        cbs[value].append(tk.Checkbutton(root, text=value, onvalue=True,
-                                offvalue=False, command=update_text))
+        cbs[value] = tk.Checkbutton(root, text=value, onvalue=True,
+                                offvalue=False, command=update_text)
         cbs[value].var = tk.BooleanVar(root, value=False)
         cbs[value]['variable'] = cbs[value].var
 

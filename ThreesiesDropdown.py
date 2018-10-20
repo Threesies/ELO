@@ -13,6 +13,13 @@ from tkinter import OptionMenu
 import pandas as pd
 championships = pd.read_csv('Championships.csv')
 championships.set_index('Names', inplace= True)
+os.chdir('/Users/acelentano/pong/ELO')
+champs = pd.read_csv('ThreesiesLog.csv')
+root = tkinter.Tk()
+title = "RTB"
+root.title(title)
+export = "ThreesiesLog"
+text = tkinter.Text(root)
 
 def add_championship(y):
     num = championships.loc[y]
@@ -20,12 +27,6 @@ def add_championship(y):
     championships.at[y] = newnum
     return championships
 
-os.chdir('/Users/acelentano/pong/ELO')
-champs = pd.read_csv('ThreesiesLog.csv')
-root = tkinter.Tk()
-title = "RTB"
-root.title(title)
-export = "ThreesiesLog"
 
 e1 = tkinter.StringVar(root)
 e2 = tkinter.StringVar(root)
@@ -34,9 +35,10 @@ e4 = tkinter.StringVar(root)
 
 global choices
 choices = ['Select Player', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', \
-           'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon', 'Peter']
+           'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon', 'Peter', 'SeaBass', 'juju']
 champions = ['Select Champion', 'Carts','Ali','MP','SunChow','PPJ', 'Fonz', 'Alex', \
-             'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon', 'Peter']
+             'D$', 'M1', 'M2', 'Spidey', 'MH', 'Jodie', 'Chris', 'RonRon', 'Peter', 'SeaBass', 'juju']
+
 
 e1.set(choices[0])
 entry1 = OptionMenu(root, e1, *choices)
@@ -84,6 +86,10 @@ def SubmitEntry():
                         'Winner','Time'])
             champs = pd.concat([champs,currentrow],axis=0, ignore_index=True, sort=True)
             champs.to_csv('ThreesiesLog.csv', index=False) 
+            e1.set(choices[0])
+            e2.set(choices[0])
+            e3.set(choices[0])
+            e4.set(champions[0])
 
 def keypress(event):
     if event.keysym == 'Escape':
